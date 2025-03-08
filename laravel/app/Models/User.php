@@ -45,4 +45,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            do {
+                $code = Str::random(8);
+            } while (User::where('referral_code', $code)->exists());
+
+            $user->referral_code = $code;
+        });
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'referred_by');
+    }
 }

@@ -19,12 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Schema::defaultStringLength(191);
-
-        \Illuminate\Support\Facades\URL::forceScheme('https');
-
-        if (config('app.env') === 'production') {
-            \URL::forceScheme('https');
-        }
+        // فعال سازی Middleware جهانی
+        \Illuminate\Support\Facades\Request::macro('sanitize', function () {
+            return $this->merge((new SanitizeInput())->handle($this, function ($req) {
+                return $req;
+            })->all());
+        });
     }
 }
