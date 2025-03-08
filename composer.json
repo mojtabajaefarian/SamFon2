@@ -1,0 +1,6 @@
+{
+    "require": {
+        "predis/predis": "^2.3",
+        "melipayamak/laravel": "1.0.0"
+    }
+}
